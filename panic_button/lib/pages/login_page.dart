@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:panic_button/pages/register_page.dart';
 import 'package:panic_button/services/services_ingreso.dart';
+import 'package:panic_button/user_preferences/user_preferences.dart';
 import 'package:panic_button/widgets/background_widget.dart';
 import 'package:panic_button/widgets/redbutton_widget.dart';
 import 'package:panic_button/widgets/text_field_widget.dart';
@@ -14,6 +15,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final prefs = UserPreferences();
+    print("PRIMEROOO: ${prefs.token}");
     final ingServices = IngresoServies();
     return Scaffold(
       body:

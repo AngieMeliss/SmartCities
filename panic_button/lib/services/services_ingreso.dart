@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:panic_button/user_preferences/user_preferences.dart';
 
 class IngresoServies {
+  final prefs = UserPreferences();
   final ip = "http://sistemic.udea.edu.co:4000";
 
   Future login(String user, String passW) async {
@@ -20,8 +22,10 @@ class IngresoServies {
 
     try {
       http.StreamedResponse response = await request.send();
+      final Map<String, dynamic> decodedData = json.decode(await response.stream.bytesToString());
       if (response.statusCode == 200) {
-        print(await response.stream.bytesToString());
+        prefs.token = decodedData["access_token"];
+        print(prefs.token);
         print("Si entro");
       }
       else {
@@ -35,6 +39,7 @@ class IngresoServies {
   }
 
   Future register(String username, String pass, String email) async {
+    bool regSucces = false;
     var headers = {
       'Content-Type': 'application/json'
     };
@@ -49,17 +54,21 @@ class IngresoServies {
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
         print(await response.stream.bytesToString());
-        print("Se envio el correo con el codigo");
+        print("aqui");
+        //regSucces = true;
       }
       else {
         print(response.reasonPhrase);
-        print("No se envio el codigo");
+        print("aquix");
+        regSucces = true;
+        
       }
+      
     } catch (e) {
       print("Hubo un error");
       
     }
-    
+    return regSucces;
   }
 
   Future Otp(String code, String username) async{

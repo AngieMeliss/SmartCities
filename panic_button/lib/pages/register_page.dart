@@ -11,6 +11,7 @@ class RegisterPage extends StatelessWidget {
   final TextEditingController userController = TextEditingController();
   final TextEditingController passController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  dynamic reg;
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +42,15 @@ class RegisterPage extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                             primary: const Color.fromARGB(255, 11, 3, 121)),
                         onPressed: () {
-                          regService.register(userController.text, passController.text, emailController.text);
-                          Navigator.pushNamed(context, "otp", arguments: [
+                          print(reg);
+                          reg = regService.register(userController.text, passController.text, emailController.text);
+                          print(reg);
+                          if (reg) {
+                            Navigator.pushNamed(context, "otp", arguments: [
                             userController.text, 
                             emailController.text]);
+                          }
+                          
                         },
                         child: const Text("Registrarse", style: TextStyle(color: Colors.white),))),
               ),

@@ -3,8 +3,13 @@ import 'package:panic_button/pages/login_page.dart';
 import 'package:panic_button/pages/register_page.dart';
 import 'package:panic_button/pages/verification_page.dart';
 import 'package:panic_button/pages/welcome_page.dart';
+import 'package:panic_button/user_preferences/user_preferences.dart';
 
-void main() => runApp(const MyApp());
+Future<void> main() async {
+  final prefs = UserPreferences();
+  await prefs.initPrefs();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
