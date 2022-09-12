@@ -42,15 +42,10 @@ class RegisterPage extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                             primary: const Color.fromARGB(255, 11, 3, 121)),
                         onPressed: () {
-                          print(reg);
-                          reg = regService.register(userController.text, passController.text, emailController.text);
-                          print(reg);
-                          if (reg) {
-                            Navigator.pushNamed(context, "otp", arguments: [
-                            userController.text, 
-                            emailController.text]);
-                          }
-                          
+                          regService.register(userController.text, passController.text, emailController.text);
+                          Navigator.pushNamed(context, "otp", arguments: [
+                          userController.text, 
+                          emailController.text]);
                         },
                         child: const Text("Registrarse", style: TextStyle(color: Colors.white),))),
               ),

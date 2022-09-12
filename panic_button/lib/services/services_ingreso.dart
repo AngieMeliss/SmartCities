@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:panic_button/user_preferences/user_preferences.dart';
 
@@ -39,7 +38,7 @@ class IngresoServies {
   }
 
   Future register(String username, String pass, String email) async {
-    bool regSucces = false;
+    final regSucces;
     var headers = {
       'Content-Type': 'application/json'
     };
@@ -54,13 +53,13 @@ class IngresoServies {
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
         print(await response.stream.bytesToString());
-        print("aqui");
+        //print("aqui");
         //regSucces = true;
       }
       else {
         print(response.reasonPhrase);
-        print("aquix");
-        regSucces = true;
+        //regSucces = response.reasonPhrase.toString();
+        //print("aquix");
         
       }
       
@@ -68,7 +67,7 @@ class IngresoServies {
       print("Hubo un error");
       
     }
-    return regSucces;
+    //return regSucces;
   }
 
   Future Otp(String code, String username) async{
@@ -76,8 +75,6 @@ class IngresoServies {
     request.fields.addAll({
       'codigo': code
     });
-
-
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
@@ -87,5 +84,29 @@ class IngresoServies {
       print(response.reasonPhrase);
     }
 
+  }
+  Future createEvent(String userName, var latitud, var longitud, String evDesc, String comment) async {
+    var headers = {
+    'Content-Type': 'application/json'
+    };
+    var request = http.Request('POST', Uri.parse('sistemic.udea.edu.co:4000/reto/events/eventos/crear/usuario/$userName'));
+    request.body = json.encode({
+      "location": [latitud, longitud],
+      "eventDescription": evDesc,
+      "comment": comment
+    });
+    request.headers.addAll(headers);
+    try {
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        print(await response.stream.bytesToString());
+      }
+      else {
+        print(response.reasonPhrase);
+      }
+    } catch (error) {
+      error;
+    }
+    
   }
 }
