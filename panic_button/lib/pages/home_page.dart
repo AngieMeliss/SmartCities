@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:panic_button/services/services_ingreso.dart';
+import 'package:panic_button/user_preferences/user_preferences.dart';
 import 'package:panic_button/widgets/background_widget.dart';
 import 'package:panic_button/widgets/menu_widget.dart';
 
@@ -18,11 +19,14 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final create = IngresoServies();
+    final prefs = UserPreferences();
+    final List<String> args = ModalRoute.of(context)?.settings.arguments as List<String>;
     return Scaffold(
       drawer: NavBar(),
-      appBar: AppBar(title: Text("Panic Button", style: TextStyle(color: Colors.black12),),
-        backgroundColor: Colors.amber[100],
-        centerTitle: true,),
+      appBar: AppBar(title: Text("Panic Button", style: TextStyle(color: Colors.white, fontSize: 20)),
+        backgroundColor: Colors.indigo[900],
+        centerTitle: false,
+      ),
       body: Stack(
         alignment: AlignmentDirectional.center,
         children: [
@@ -30,6 +34,15 @@ class HomePage extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Row(
+              children: [
+                SizedBox(width: 200,),
+                RotationTransition(turns: AlwaysStoppedAnimation(15/360),
+                child: Image(
+                  image: AssetImage("msg.png"),
+                  width: 150,)),
+              ],
+            ),
             Stack(
               alignment: AlignmentDirectional.center,
               children: [
@@ -60,7 +73,7 @@ class HomePage extends StatelessWidget {
                     /* setState((){
                       _isListenLocation = true;
                     }); */
-                    create.createEvent("Anonimo",latitud, longitud, "","");
+                    create.createEvent(prefs.token,args[0],latitud, longitud, "","");
                     Navigator.pushNamed(context, "alarm");
                   },
                 ),

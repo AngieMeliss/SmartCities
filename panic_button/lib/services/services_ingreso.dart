@@ -31,9 +31,9 @@ class IngresoServies {
         print(response.reasonPhrase);
         print("No entro por falla de credenciales");
       }
-    } catch (e) {
-        print(e);
+    } catch (error) {
         print("No entro por falla del server");
+        print(error);
     }
   }
 
@@ -53,21 +53,15 @@ class IngresoServies {
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
         print(await response.stream.bytesToString());
-        //print("aqui");
-        //regSucces = true;
       }
       else {
         print(response.reasonPhrase);
-        //regSucces = response.reasonPhrase.toString();
-        //print("aquix");
-        
       }
       
-    } catch (e) {
+    } catch (error) {
       print("Hubo un error");
-      
+      print(error);
     }
-    //return regSucces;
   }
 
   Future Otp(String code, String username) async{
@@ -85,11 +79,12 @@ class IngresoServies {
     }
 
   }
-  Future createEvent(String userName, var latitud, var longitud, String evDesc, String comment) async {
+  Future createEvent(String tok, String userName, var latitud, var longitud, String evDesc, String comment) async {
     var headers = {
+    'Authorization': 'Bearer $tok',
     'Content-Type': 'application/json'
     };
-    var request = http.Request('POST', Uri.parse('sistemic.udea.edu.co:4000/reto/events/eventos/crear/usuario/$userName'));
+    var request = http.Request('POST', Uri.parse('$ip/reto/events/eventos/crear/usuario/$userName'));
     request.body = json.encode({
       "location": [latitud, longitud],
       "eventDescription": evDesc,
@@ -105,8 +100,86 @@ class IngresoServies {
         print(response.reasonPhrase);
       }
     } catch (error) {
-      error;
+      print("Algo salió mal");
+      print(error);
     }
-    
+  }
+
+  Future addContact (String userName, String name, String lastname, String email, String phone) async {
+    var headers = {
+      'Authorization': 'Bearer ${prefs.token}',
+      'Content-Type': 'application/json'
+    };
+    var request = http.Request('POST', Uri.parse('$ip/reto/usuarios/contactos/crear/$userName'));
+    request.body = json.encode({
+      "name": name,
+      "lastName": lastname,
+      "email": email,
+      "cellPhone": phone
+    });
+    request.headers.addAll(headers);
+    try {
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        print(await response.stream.bytesToString());
+      }
+      else {
+        print(response.reasonPhrase);
+      }
+    } catch (error) {
+      print("Algo salió mal");
+      print(error);
+    }
+  }
+
+  Future editContact(String userName, String oldEmail, String oldPhone,
+    String name, String lastname, String newEmail, String newPhone) async {
+    var headers = {
+      'Authorization': 'Bearer ${prefs.token}',
+      'Content-Type': 'application/json'
+    };
+    var request = http.Request('PUT', Uri.parse('$ip/reto/usuarios/contactos/editar/$userName/email/$oldEmail/cellPhone/$oldPhone'));
+    request.body = json.encode({
+      "name": name,
+      "lastName": lastname,
+      "email": newEmail,
+      "cellPhone": newPhone,
+    });
+    request.headers.addAll(headers);
+    try {
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        print(await response.stream.bytesToString());
+      }
+      else {
+        print(response.reasonPhrase);
+      }
+    } catch (error) {
+      print("Algo salió mal");
+      print(error);
+    }
+  }
+
+  Future deleteContact(String userName, String email, String phone) async {
+    var headers = {
+      'Authorization': 'Bearer ${prefs.token}'
+    };
+    var request = http.Request('DELETE', Uri.parse('$ip/reto/usuarios/contactos/eliminar/$userName/email/$email/cellPhone/$phone'));
+
+    request.headers.addAll(headers);
+    try {
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        print(await response.stream.bytesToString());
+      }
+      else {
+        print(response.reasonPhrase);
+      }
+    } catch (error) {
+      print("Algo salió mal");
+      print(error);
+    }
+
   }
 }

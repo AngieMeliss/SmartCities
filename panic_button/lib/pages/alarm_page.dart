@@ -10,6 +10,10 @@ class AlarmPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Panic Button", style: TextStyle(color: Colors.white, fontSize: 20)),
+        backgroundColor: Colors.indigo[900],
+        centerTitle: false,
+      ),
       body: Stack(
         children: [
           BackgroundWidget(),
@@ -69,7 +73,7 @@ class AlarmPage extends StatelessWidget {
                 padding:
                   const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                 child: SizedBox(
-                  width: double.infinity,
+                  width: 400,
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -83,13 +87,13 @@ class AlarmPage extends StatelessWidget {
                 padding:
                   const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                 child: SizedBox(
-                  width: double.infinity,
+                  width: 300,
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       primary: Color.fromARGB(255, 24, 192, 75)),
                     onPressed: () {
-                      
+                      Navigator.pushNamed(context, "offAlarm", arguments:["","Evento urgente","Estamos gestionando ayudas"]);
                     },
                     child: const Text("Apagar alarma", style: TextStyle(color: Colors.white),))),
               ),

@@ -6,7 +6,7 @@ class BackgroundWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-  decoration: const BoxDecoration(
+    decoration: const BoxDecoration(
     image: DecorationImage(
       image: AssetImage('whiteBackground.jpg'),
       fit: BoxFit.cover,

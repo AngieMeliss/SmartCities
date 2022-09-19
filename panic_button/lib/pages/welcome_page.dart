@@ -2,6 +2,7 @@ import 'dart:html';
 import 'package:panic_button/services/services_ingreso.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:panic_button/user_preferences/user_preferences.dart';
 import 'package:panic_button/widgets/background_widget.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -18,7 +19,13 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final create = IngresoServies();
+    create.login("anonymous", "1234567890");
+    final prefs = UserPreferences();
     return Scaffold(
+      appBar: AppBar(title: Text("Panic Button", style: TextStyle(color: Colors.white, fontSize: 20)),
+        backgroundColor: Colors.indigo[900],
+        centerTitle: false,
+      ),
       body:
       Stack(
         children: [
@@ -55,7 +62,7 @@ class WelcomePage extends StatelessWidget {
                   /* setState((){
                     _isListenLocation = true;
                   }); */
-                  create.createEvent("Anonimo",latitud, longitud, "","");
+                  create.createEvent(prefs.token,"anonymous",latitud, longitud, "","");
                   Navigator.pushNamed(context, "alarm");
                 },
               ),
@@ -76,7 +83,7 @@ class WelcomePage extends StatelessWidget {
               padding:
                 const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
               child: SizedBox(
-                width: double.infinity,
+                width: 200,
                 height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
